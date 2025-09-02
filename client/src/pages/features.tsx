@@ -153,10 +153,10 @@ export default function Features() {
               Whether you're looking for parking or listing your space, we've got you covered.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up">
-              <Button asChild size="lg" className="btn-primary shadow-medium hover:shadow-hard">
+              <Button asChild size="lg" className="bg-white text-blue-700 hover:bg-blue-50 font-semibold shadow-lg hover:shadow-xl transition-all">
                 <Link href="/search">Find Parking</Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="glass-effect border-white/20 text-white hover:bg-white/10 transition-all">
+              <Button asChild size="lg" className="bg-white/10 border-2 border-white text-white hover:bg-white hover:text-blue-700 font-semibold transition-all">
                 <Link href="/list-space">List Your Space</Link>
               </Button>
             </div>
@@ -355,13 +355,13 @@ export default function Features() {
             Join thousands of drivers and hosts who trust Parq for their parking needs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
+            <Button asChild size="lg" className="bg-white text-blue-700 hover:bg-blue-50 font-semibold shadow-lg hover:shadow-xl transition-all">
               <Link href="/search">
                 <Search className="w-5 h-5 mr-2" />
                 Find Parking Now
               </Link>
             </Button>
-            <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
+            <Button asChild size="lg" className="bg-white text-blue-700 hover:bg-blue-50 font-semibold shadow-lg hover:shadow-xl transition-all">
               <Link href="/list-space">
                 <DollarSign className="w-5 h-5 mr-2" />
                 Start Earning
