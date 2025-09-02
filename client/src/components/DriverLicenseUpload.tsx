@@ -2,8 +2,6 @@ import { useState } from "react";
 import type { ReactNode } from "react";
 import Uppy from "@uppy/core";
 import { DashboardModal } from "@uppy/react";
-// Note: Uppy styles need to be imported from the proper dist location
-// If the default CSS imports don't work, you can include them directly in index.css
 import AwsS3 from "@uppy/aws-s3";
 import type { UploadResult } from "@uppy/core";
 import { Button } from "@/components/ui/button";
@@ -54,7 +52,7 @@ export function DriverLicenseUpload({
         },
       })
       .on("complete", async (result) => {
-        if (result.successful.length > 0) {
+        if (result.successful && result.successful.length > 0) {
           const uploadedFile = result.successful[0];
           const imageUrl = uploadedFile.uploadURL;
           
