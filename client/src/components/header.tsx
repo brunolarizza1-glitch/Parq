@@ -40,13 +40,6 @@ export default function Header() {
             >
               List Your Space
             </Link>
-            <Link 
-              href="/features" 
-              className={`transition-colors ${location === "/features" ? "text-primary" : "text-foreground hover:text-primary"}`}
-              data-testid="link-features"
-            >
-              Features
-            </Link>
             {isAuthenticated && (
               <>
                 <Link 
@@ -146,15 +139,6 @@ export default function Header() {
               >
                 <i className="fas fa-plus mr-3"></i>
                 List Your Space
-              </Link>
-              <Link 
-                href="/features" 
-                className={`block py-2 px-3 rounded-lg transition-colors ${location === "/features" ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-muted"}`}
-                onClick={() => setMobileMenuOpen(false)}
-                data-testid="link-mobile-features"
-              >
-                <i className="fas fa-star mr-3"></i>
-                Features
               </Link>
 
               {/* Account Section */}
