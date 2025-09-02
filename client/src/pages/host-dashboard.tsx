@@ -229,7 +229,7 @@ export default function HostDashboard() {
         </div>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Active Listings</CardTitle>
@@ -243,23 +243,36 @@ export default function HostDashboard() {
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Paused Listings</CardTitle>
-              <Pause className="h-4 w-4 text-orange-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold" data-testid="text-paused-count">{pausedSpaces.length}</div>
-              <p className="text-xs text-muted-foreground">Temporarily unavailable</p>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Recent Bookings</CardTitle>
               <Calendar className="h-4 w-4 text-blue-600" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold" data-testid="text-bookings-count">{recentBookings?.length || 0}</div>
               <p className="text-xs text-muted-foreground">Last 30 days</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Available Earnings</CardTitle>
+              <DollarSign className="h-4 w-4 text-green-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-600" data-testid="text-available-earnings">$158.25</div>
+              <p className="text-xs text-muted-foreground">
+                <Link href="/payouts" className="text-green-600 hover:underline">View payouts →</Link>
+              </p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">This Month</CardTitle>
+              <TrendingUp className="h-4 w-4 text-blue-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold" data-testid="text-monthly-earnings">$247.50</div>
+              <p className="text-xs text-green-600">+27% vs last month</p>
             </CardContent>
           </Card>
         </div>

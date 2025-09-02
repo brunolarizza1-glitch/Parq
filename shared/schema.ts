@@ -224,6 +224,65 @@ export const quickReplies = pgTable("quick_replies", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Host earnings and payout tracking
+export const earnings = pgTable("earnings", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  hostId: varchar("host_id").notNull().references(() => users.id),
+  bookingId: varchar("booking_id").notNull().references(() => bookings.id),
+  spaceId: varchar("space_id").notNull().references(() => parkingSpaces.id),
+  grossAmount: decimal("gross_amount", { precision: 10, scale: 2 }).notNull(),
+  platformFee: decimal("platform_fee", { precision: 10, scale: 2 }).notNull(),
+  netAmount: decimal("net_amount", { precision: 10, scale: 2 }).notNull(),
+  status: varchar("status").notNull().default("pending"), // pending, available, paid
+  payoutId: varchar("payout_id"),
+  earningDate: timestamp("earning_date").notNull(),
+  availableAt: timestamp("available_at").notNull(), // When funds become available
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Payout transactions
+export const payouts = pgTable("payouts", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  hostId: varchar("host_id").notNull().references(() => users.id),
+  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  currency: varchar("currency").notNull().default("USD"),
+  status: varchar("status").notNull().default("processing"), // processing, completed, failed
+  payoutMethod: varchar("payout_method").notNull(), // bank_account, debit_card
+  payoutMethodId: varchar("payout_method_id"), // External provider ID
+  transactionId: varchar("transaction_id"), // External transaction ID
+  failureReason: text("failure_reason"),
+  earningsCount: integer("earnings_count").notNull(), // Number of earnings included
+  periodStart: timestamp("period_start").notNull(),
+  periodEnd: timestamp("period_end").notNull(),
+  expectedArrival: timestamp("expected_arrival"),
+  completedAt: timestamp("completed_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Payout methods for hosts
+export const payoutMethods = pgTable("payout_methods", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  hostId: varchar("host_id").notNull().references(() => users.id),
+  type: varchar("type").notNull(), // bank_account, debit_card
+  isDefault: boolean("is_default").default(false),
+  isActive: boolean("is_active").default(true),
+  // Bank account fields
+  bankName: varchar("bank_name"),
+  accountType: varchar("account_type"), // checking, savings
+  routingNumber: varchar("routing_number"),
+  accountNumberLast4: varchar("account_number_last4"),
+  // Debit card fields
+  cardBrand: varchar("card_brand"), // visa, mastercard, etc.
+  cardLast4: varchar("card_last4"),
+  expiryMonth: integer("expiry_month"),
+  expiryYear: integer("expiry_year"),
+  // External provider fields
+  stripePaymentMethodId: varchar("stripe_payment_method_id"),
+  verificationStatus: varchar("verification_status").default("pending"), // pending, verified, failed
+  verifiedAt: timestamp("verified_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Event pricing for special occasions
 export const eventPricing = pgTable("event_pricing", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -277,19 +336,6 @@ export const payments = pgTable("payments", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-// Host payouts via Stripe Connect
-export const payouts = pgTable("payouts", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  hostId: varchar("host_id").notNull().references(() => users.id),
-  stripeTransferId: varchar("stripe_transfer_id").unique(),
-  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
-  currency: varchar("currency").default("usd"),
-  status: varchar("status").notNull(), // pending, completed, failed
-  bookingIds: text("booking_ids").array().notNull(), // bookings included in this payout
-  stripeAccountId: varchar("stripe_account_id").notNull(),
-  processedAt: timestamp("processed_at"),
-  createdAt: timestamp("created_at").defaultNow(),
-});
 
 // Admin dispute resolution
 export const disputes = pgTable("disputes", {
@@ -420,6 +466,21 @@ export const insertQuickReplySchema = createInsertSchema(quickReplies).omit({
   createdAt: true,
 });
 
+export const insertEarningSchema = createInsertSchema(earnings).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertPayoutSchema = createInsertSchema(payouts).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertPayoutMethodSchema = createInsertSchema(payoutMethods).omit({
+  id: true,
+  createdAt: true,
+});
+
 export const insertEventPricingSchema = createInsertSchema(eventPricing).omit({
   id: true,
   createdAt: true,
@@ -436,11 +497,6 @@ export const insertSpotGuaranteeSchema = createInsertSchema(spotGuarantees).omit
 });
 
 export const insertPaymentSchema = createInsertSchema(payments).omit({
-  id: true,
-  createdAt: true,
-});
-
-export const insertPayoutSchema = createInsertSchema(payouts).omit({
   id: true,
   createdAt: true,
 });
@@ -520,9 +576,11 @@ export type Referral = typeof referrals.$inferSelect;
 export type WaitlistEntry = typeof waitlist.$inferSelect;
 export type Vehicle = typeof vehicles.$inferSelect;
 export type QuickReply = typeof quickReplies.$inferSelect;
+export type Earning = typeof earnings.$inferSelect;
+export type Payout = typeof payouts.$inferSelect;
+export type PayoutMethod = typeof payoutMethods.$inferSelect;
 export type EventPricing = typeof eventPricing.$inferSelect;
 export type ArrivalPin = typeof arrivalPins.$inferSelect;
 export type SpotGuarantee = typeof spotGuarantees.$inferSelect;
 export type Payment = typeof payments.$inferSelect;
-export type Payout = typeof payouts.$inferSelect;
 export type Dispute = typeof disputes.$inferSelect;
