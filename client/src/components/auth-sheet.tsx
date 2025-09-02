@@ -126,7 +126,7 @@ export default function AuthSheet({
           backgroundColor: '#ffffff',
           minHeight: '300px',
           zIndex: 10000,
-          border: '3px solid #ff0000'
+          border: '2px solid #3b82f6'
         }}
       >
         {/* Close Button */}
