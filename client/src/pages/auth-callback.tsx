@@ -13,7 +13,7 @@ export default function AuthCallback() {
         
         if (error) {
           console.error('Auth callback error:', error);
-          setLocation('/login');
+          setLocation('/');
           return;
         }
 
@@ -23,11 +23,11 @@ export default function AuthCallback() {
           localStorage.removeItem('auth_redirect');
           setLocation(redirectUrl);
         } else {
-          setLocation('/login');
+          setLocation('/');
         }
       } catch (error) {
         console.error('Unexpected auth callback error:', error);
-        setLocation('/login');
+        setLocation('/');
       }
     };
 

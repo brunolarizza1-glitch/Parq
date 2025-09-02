@@ -22,7 +22,7 @@ export default function VerificationRequired() {
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
-      setLocation("/login");
+      setLocation("/");
     }
   }, [authLoading, isAuthenticated, setLocation]);
 

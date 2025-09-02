@@ -301,12 +301,11 @@ export default function ListSpace() {
             <p className="text-muted-foreground mb-6">Please sign in to list your parking space</p>
             <Button 
               onClick={() => {
-                const currentPath = window.location.pathname;
-                window.location.href = `/login?redirect=${encodeURIComponent(currentPath)}`;
+                window.location.href = '/';
               }}
               data-testid="button-sign-in"
             >
-              Sign In
+              Go to Home to Sign In
             </Button>
           </div>
         </main>
