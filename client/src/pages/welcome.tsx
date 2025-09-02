@@ -90,18 +90,7 @@ export default function Welcome() {
           </DSButton>
         </div>
 
-        {/* Continue Button */}
-        <div className="pt-4">
-          <DSButton 
-            variant="ghost" 
-            size="sm"
-            onClick={() => handleNavigation("/search")}
-            data-testid="button-continue"
-            className="text-muted-foreground"
-          >
-            Continue →
-          </DSButton>
-        </div>
+        
 
         {/* Footer */}
         <div className="pt-8 text-center">
