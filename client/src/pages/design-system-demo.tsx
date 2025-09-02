@@ -33,16 +33,42 @@ export default function DesignSystemDemo() {
       <div className="max-w-4xl mx-auto space-y-6">
         
         {/* Typography */}
-        <section className="space-y-3">
+        <section className="space-y-4 animate-fade-in">
           <DSH1>Design System</DSH1>
           <DSH2>Typography & Components</DSH2>
           <DSBody>
-            This demonstrates our design system with WCAG AA compliant colors, 
-            8-point spacing scale, and consistent component styling.
+            This demonstrates our enhanced design system with WCAG AA compliant colors, 
+            modern gradients, improved typography hierarchy, and refined component styling.
           </DSBody>
           <DSCaption>
-            All components follow our spacing and color standards for consistency.
+            All components follow our 8-point spacing scale and modern visual standards.
           </DSCaption>
+        </section>
+
+        {/* Visual Effects Demo */}
+        <section className="space-y-4">
+          <DSH2>Visual Effects</DSH2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="card-gradient p-4 rounded-lg">
+              <DSCaption>Card Gradient</DSCaption>
+            </div>
+            <div className="glass-effect p-4 rounded-lg">
+              <DSCaption>Glass Effect</DSCaption>
+            </div>
+            <div className="p-4 rounded-lg shadow-soft bg-card">
+              <DSCaption>Soft Shadow</DSCaption>
+            </div>
+          </div>
+        </section>
+
+        {/* Enhanced Buttons */}
+        <section className="space-y-4">
+          <DSH2>Enhanced Buttons</DSH2>
+          <div className="flex flex-wrap gap-4">
+            <DSButton className="btn-primary">Primary Button</DSButton>
+            <DSButton className="btn-secondary">Secondary Button</DSButton>
+            <DSButton className="btn-accent">Accent Button</DSButton>
+          </div>
         </section>
 
         {/* Buttons */}
