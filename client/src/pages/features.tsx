@@ -154,7 +154,7 @@ export default function Features() {
             <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
               <Link href="/search">Find Parking</Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-blue-600">
+            <Button asChild variant="outline" size="lg" className="border-white text-white bg-transparent hover:bg-white hover:text-blue-600 transition-all">
               <Link href="/list-space">List Your Space</Link>
             </Button>
           </div>
