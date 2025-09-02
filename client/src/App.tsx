@@ -105,8 +105,9 @@ function Router() {
 
   return (
     <Switch>
-        <Route path="/" component={Welcome} />
+        <Route path="/" component={Features} />
         <Route path="/home" component={Home} />
+        <Route path="/welcome" component={Welcome} />
         <Route path="/listing/:id" component={ListingDetails} />
         <Route path="/profile" component={Profile} />
         <Route path="/list-space" component={ListSpace} />
