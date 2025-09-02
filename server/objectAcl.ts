@@ -3,7 +3,11 @@ import { File } from "@google-cloud/storage";
 const ACL_POLICY_METADATA_KEY = "custom:aclPolicy";
 
 // The type of the access group.
-export enum ObjectAccessGroupType {}
+export enum ObjectAccessGroupType {
+  USER = "user",
+  ROLE = "role",
+  PUBLIC = "public"
+}
 
 // The logic user group that can access the object.
 export interface ObjectAccessGroup {
@@ -53,10 +57,51 @@ abstract class BaseObjectAccessGroup implements ObjectAccessGroup {
   public abstract hasMember(userId: string): Promise<boolean>;
 }
 
+// User access group for individual users
+class UserAccessGroup extends BaseObjectAccessGroup {
+  constructor(userId: string) {
+    super(ObjectAccessGroupType.USER, userId);
+  }
+
+  public async hasMember(userId: string): Promise<boolean> {
+    return this.id === userId;
+  }
+}
+
+// Role access group for role-based access
+class RoleAccessGroup extends BaseObjectAccessGroup {
+  constructor(roleId: string) {
+    super(ObjectAccessGroupType.ROLE, roleId);
+  }
+
+  public async hasMember(userId: string): Promise<boolean> {
+    // TODO: Implement role membership check based on your user/role system
+    // For now, return false as this feature isn't implemented
+    return false;
+  }
+}
+
+// Public access group for public objects
+class PublicAccessGroup extends BaseObjectAccessGroup {
+  constructor() {
+    super(ObjectAccessGroupType.PUBLIC, "public");
+  }
+
+  public async hasMember(userId: string): Promise<boolean> {
+    return true; // Everyone is a member of the public group
+  }
+}
+
 function createObjectAccessGroup(
   group: ObjectAccessGroup,
 ): BaseObjectAccessGroup {
   switch (group.type) {
+    case ObjectAccessGroupType.USER:
+      return new UserAccessGroup(group.id);
+    case ObjectAccessGroupType.ROLE:
+      return new RoleAccessGroup(group.id);
+    case ObjectAccessGroupType.PUBLIC:
+      return new PublicAccessGroup();
     default:
       throw new Error(`Unknown access group type: ${group.type}`);
   }

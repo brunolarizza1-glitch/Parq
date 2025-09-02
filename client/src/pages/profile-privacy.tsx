@@ -11,23 +11,37 @@ import { Link } from "wouter";
 export default function ProfilePrivacy() {
   const { toast } = useToast();
   const [locationAccess, setLocationAccess] = useState(() => {
-    return localStorage.getItem('parq-privacy-consent') === 'true';
+    try {
+      return localStorage.getItem('parq-privacy-consent') === 'true';
+    } catch (error) {
+      console.warn('Failed to access localStorage:', error);
+      return false;
+    }
   });
 
   const handleLocationToggle = (enabled: boolean) => {
-    if (enabled) {
-      localStorage.setItem('parq-privacy-consent', 'true');
-      setLocationAccess(true);
+    try {
+      if (enabled) {
+        localStorage.setItem('parq-privacy-consent', 'true');
+        setLocationAccess(true);
+        toast({
+          title: "Location access enabled",
+          description: "Parq can now access your location to find nearby parking.",
+        });
+      } else {
+        localStorage.removeItem('parq-privacy-consent');
+        setLocationAccess(false);
+        toast({
+          title: "Location access disabled", 
+          description: "You can still search by entering addresses manually.",
+        });
+      }
+    } catch (error) {
+      console.warn('Failed to update localStorage:', error);
       toast({
-        title: "Location access enabled",
-        description: "Parq can now access your location to find nearby parking.",
-      });
-    } else {
-      localStorage.removeItem('parq-privacy-consent');
-      setLocationAccess(false);
-      toast({
-        title: "Location access disabled", 
-        description: "You can still search by entering addresses manually.",
+        title: "Settings update failed",
+        description: "Unable to save your preference. Please try again.",
+        variant: "destructive",
       });
     }
   };
