@@ -22,13 +22,13 @@ export default function Landing() {
             Book parking instantly. Stop circling the block.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600 text-lg px-8 py-4 w-full sm:w-auto">
+            <Button asChild size="lg" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-purple-600 text-lg px-8 py-4 w-full sm:w-auto">
               <Link href="/search">
                 Find Parking Now
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600 text-lg px-8 py-4 w-full sm:w-auto">
+            <Button asChild size="lg" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-purple-600 text-lg px-8 py-4 w-full sm:w-auto">
               <Link href="/host-signup">
                 List Your Space
                 <DollarSign className="ml-2 w-5 h-5" />
