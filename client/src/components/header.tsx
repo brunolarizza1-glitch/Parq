@@ -15,7 +15,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-16 min-h-[4rem]">
           {/* Logo and Brand */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2" data-testid="link-home">
@@ -94,7 +94,7 @@ export default function Header() {
               ) : isAuthenticated ? (
                 <div className="flex items-center space-x-3">
                   <Link href="/profile">
-                    <button className="flex items-center space-x-2 p-2 border border-border rounded-full hover:shadow-md transition-all" data-testid="button-user-menu">
+                    <button className="flex items-center space-x-2 px-3 py-2 border border-border rounded-full hover:shadow-md transition-all" data-testid="button-user-menu">
                       {user?.user_metadata?.avatar_url ? (
                         <img 
                           src={user.user_metadata.avatar_url} 
@@ -102,16 +102,16 @@ export default function Header() {
                           className="w-6 h-6 rounded-full object-cover"
                         />
                       ) : (
-                        <i className="fas fa-user-circle text-muted-foreground text-xl"></i>
+                        <i className="fas fa-user-circle text-muted-foreground text-lg flex items-center"></i>
                       )}
-                      <span className="text-sm font-medium text-foreground">
+                      <span className="text-sm font-medium text-foreground leading-none">
                         {user?.user_metadata?.full_name || user?.email?.split('@')[0] || "Account"}
                       </span>
                     </button>
                   </Link>
                   <button
                     onClick={() => signOut()}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center h-full"
                     data-testid="button-sign-out"
                   >
                     Sign Out
