@@ -105,7 +105,7 @@ export default function ListSpace() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { user: authUser, isAuthenticated, isLoading: authLoading } = useAuth();
-  const user = authUser as User | undefined;
+  const user = authUser as unknown as User | undefined;
   
   
   // Checklist state
