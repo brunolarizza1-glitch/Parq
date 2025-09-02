@@ -6,11 +6,14 @@ import { Progress } from "@/components/ui/progress";
 import { Shield, FileText, Clock, CheckCircle, AlertCircle } from "lucide-react";
 import { DriverLicenseUpload } from "@/components/DriverLicenseUpload";
 import { useAuth } from "@/hooks/useAuth";
+import { useAuthSheet } from "@/hooks/useAuthSheet";
 import { useQuery } from "@tanstack/react-query";
+import AuthSheet from "@/components/auth-sheet";
 
 export default function VerificationRequired() {
   const [, setLocation] = useLocation();
   const { user: authUser, isAuthenticated, isLoading: authLoading } = useAuth();
+  const { isOpen: isAuthOpen, mode: authMode, openSheet: openAuthSheet, closeSheet: closeAuthSheet, toggleMode: toggleAuthMode } = useAuthSheet();
   
   // Fetch complete user data from API
   const { data: user, isLoading: userLoading } = useQuery({
@@ -22,9 +25,9 @@ export default function VerificationRequired() {
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
-      setLocation("/");
+      openAuthSheet("signin");
     }
-  }, [authLoading, isAuthenticated, setLocation]);
+  }, [authLoading, isAuthenticated, openAuthSheet]);
 
   const handleVerificationComplete = () => {
     // Refresh user data to show updated verification status
@@ -213,6 +216,14 @@ export default function VerificationRequired() {
           </div>
         </div>
       </div>
+      
+      {/* Auth Sheet */}
+      <AuthSheet
+        isOpen={isAuthOpen}
+        onClose={closeAuthSheet}
+        mode={authMode}
+        onModeChange={toggleAuthMode}
+      />
     </div>
   );
 }

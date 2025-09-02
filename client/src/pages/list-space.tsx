@@ -18,7 +18,9 @@ import { insertParkingSpaceSchema, type User } from "@shared/schema";
 import { z } from "zod";
 import LocationPicker from "@/components/location-picker";
 import { useAuth } from "@/hooks/useAuth";
+import { useAuthSheet } from "@/hooks/useAuthSheet";
 import { isUnauthorizedError } from "@/lib/authUtils";
+import AuthSheet from "@/components/auth-sheet";
 import { 
   Shield, 
   CheckCircle, 
@@ -105,6 +107,7 @@ export default function ListSpace() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { user: authUser, isAuthenticated, isLoading: authLoading } = useAuth();
+  const { isOpen: isAuthOpen, mode: authMode, openSheet: openAuthSheet, closeSheet: closeAuthSheet, toggleMode: toggleAuthMode } = useAuthSheet();
   const user = authUser as unknown as User | undefined;
   
   
@@ -300,16 +303,22 @@ export default function ListSpace() {
             <h2 className="text-2xl font-bold mb-2">Authentication Required</h2>
             <p className="text-muted-foreground mb-6">Please sign in to list your parking space</p>
             <Button 
-              onClick={() => {
-                window.location.href = '/';
-              }}
+              onClick={() => openAuthSheet("signin")}
               data-testid="button-sign-in"
             >
-              Go to Home to Sign In
+              Sign In
             </Button>
           </div>
         </main>
         <Footer />
+        
+        {/* Auth Sheet */}
+        <AuthSheet
+          isOpen={isAuthOpen}
+          onClose={closeAuthSheet}
+          mode={authMode}
+          onModeChange={toggleAuthMode}
+        />
       </div>
     );
   }
@@ -506,6 +515,14 @@ export default function ListSpace() {
           }}
         />
       )}
+
+      {/* Auth Sheet */}
+      <AuthSheet
+        isOpen={isAuthOpen}
+        onClose={closeAuthSheet}
+        mode={authMode}
+        onModeChange={toggleAuthMode}
+      />
 
     </div>
   );
