@@ -253,7 +253,7 @@ export default function Features() {
       </section>
 
       {/* How It Works */}
-      <section id="features" className="py-20 bg-white">
+      <section id="how-it-works" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">

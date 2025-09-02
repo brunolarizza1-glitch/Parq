@@ -75,7 +75,7 @@ export default function Header() {
               Features
             </Link>
             <Link 
-              href="/features#features" 
+              href="/features#how-it-works" 
               className="text-foreground hover:text-primary transition-colors" 
               data-testid="link-how-it-works"
             >
