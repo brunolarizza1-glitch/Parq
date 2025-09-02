@@ -5,18 +5,26 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Shield, FileText, Clock, CheckCircle, AlertCircle } from "lucide-react";
 import { DriverLicenseUpload } from "@/components/DriverLicenseUpload";
+import { useAuth } from "@/hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
 
 export default function VerificationRequired() {
   const [, setLocation] = useLocation();
+  const { user: authUser, isAuthenticated, isLoading: authLoading } = useAuth();
   
-  // Temporarily disable auth query
-  const user = null;
-  const isLoading = false;
+  // Fetch complete user data from API
+  const { data: user, isLoading: userLoading } = useQuery({
+    queryKey: ["/api/auth/user"],
+    enabled: isAuthenticated && !!authUser,
+  });
+
+  const isLoading = authLoading || userLoading;
 
   useEffect(() => {
-    // Redirect to onboarding since auth is disabled
-    setLocation("/onboarding");
-  }, [setLocation]);
+    if (!authLoading && !isAuthenticated) {
+      setLocation("/login");
+    }
+  }, [authLoading, isAuthenticated, setLocation]);
 
   const handleVerificationComplete = () => {
     // Refresh user data to show updated verification status
@@ -36,7 +44,7 @@ export default function VerificationRequired() {
   }
 
   const getVerificationStatus = () => {
-    if (!user.driverLicenseImageUrl) {
+    if (!user?.driverLicenseImageUrl) {
       return { status: "required", progress: 0 };
     }
     
@@ -102,7 +110,7 @@ export default function VerificationRequired() {
 
                   <DriverLicenseUpload
                     onUploadComplete={handleVerificationComplete}
-                    currentImageUrl={user.driverLicenseImageUrl || undefined}
+                    currentImageUrl={user?.driverLicenseImageUrl || undefined}
                   >
                     <FileText className="h-5 w-5 mr-2" />
                     Upload Driver's License
@@ -153,20 +161,20 @@ export default function VerificationRequired() {
                     </p>
                   </div>
 
-                  {user.verificationNotes && (
+                  {user?.verificationNotes && (
                     <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
                       <h4 className="font-medium text-red-900 dark:text-red-300 mb-2">
                         Feedback from our team:
                       </h4>
                       <p className="text-sm text-red-800 dark:text-red-400">
-                        {user.verificationNotes}
+                        {user?.verificationNotes}
                       </p>
                     </div>
                   )}
 
                   <DriverLicenseUpload
                     onUploadComplete={handleVerificationComplete}
-                    currentImageUrl={user.driverLicenseImageUrl || undefined}
+                    currentImageUrl={user?.driverLicenseImageUrl || undefined}
                   >
                     <FileText className="h-5 w-5 mr-2" />
                     Upload New License Image
