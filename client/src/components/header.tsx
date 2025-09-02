@@ -15,17 +15,17 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center h-16">
           {/* Logo and Brand */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center mr-12">
             <Link href="/" className="flex items-center space-x-2" data-testid="link-home">
               <i className="fas fa-parking text-primary text-2xl"></i>
               <span className="text-xl font-bold text-foreground">Parq</span>
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          {/* Desktop Navigation - Centered */}
+          <nav className="hidden md:flex items-center space-x-10 flex-1">
             <Link 
               href="/search" 
               className={`transition-colors ${location === "/search" ? "text-primary" : "text-foreground hover:text-primary"}`}
@@ -62,19 +62,19 @@ export default function Header() {
           </div>
 
           {/* Desktop User Actions */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-8">
             {isAuthenticated && (
-              <nav className="flex items-center space-x-6 mr-6">
+              <nav className="flex items-center space-x-8">
                 <Link 
                   href="/bookings" 
-                  className={`text-sm transition-colors ${location === "/bookings" ? "text-primary" : "text-foreground hover:text-primary"}`}
+                  className={`transition-colors ${location === "/bookings" ? "text-primary" : "text-foreground hover:text-primary"}`}
                   data-testid="link-bookings"
                 >
                   My Bookings
                 </Link>
                 <Link 
                   href="/host-dashboard" 
-                  className={`text-sm transition-colors ${location === "/host-dashboard" ? "text-primary" : "text-foreground hover:text-primary"}`}
+                  className={`transition-colors ${location === "/host-dashboard" ? "text-primary" : "text-foreground hover:text-primary"}`}
                   data-testid="link-host-dashboard"
                 >
                   Host Dashboard
