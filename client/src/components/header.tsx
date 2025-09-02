@@ -25,7 +25,7 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
+          <nav className="hidden md:flex items-center space-x-5">
             <Link 
               href="/search" 
               className={`transition-colors ${location === "/search" ? "text-primary" : "text-foreground hover:text-primary"}`}
@@ -33,24 +33,6 @@ export default function Header() {
             >
               Find Parking
             </Link>
-            {isAuthenticated && (
-              <Link 
-                href="/bookings" 
-                className={`transition-colors ${location === "/bookings" ? "text-primary" : "text-foreground hover:text-primary"}`}
-                data-testid="link-bookings"
-              >
-                My Bookings
-              </Link>
-            )}
-            {isAuthenticated && (
-              <Link 
-                href="/host-dashboard" 
-                className={`transition-colors ${location === "/host-dashboard" ? "text-primary" : "text-foreground hover:text-primary"}`}
-                data-testid="link-host-dashboard"
-              >
-                Host Dashboard
-              </Link>
-            )}
             <Link 
               href="/list-space" 
               className={`transition-colors ${location === "/list-space" ? "text-primary" : "text-foreground hover:text-primary"}`}
@@ -87,8 +69,26 @@ export default function Header() {
           </div>
 
           {/* Desktop User Actions */}
-          <div className="hidden md:flex items-center space-x-3">
-            <div className="flex items-center space-x-2">
+          <div className="hidden md:flex items-center space-x-4">
+            {isAuthenticated && (
+              <nav className="flex items-center space-x-4 mr-4">
+                <Link 
+                  href="/bookings" 
+                  className={`text-sm transition-colors ${location === "/bookings" ? "text-primary" : "text-foreground hover:text-primary"}`}
+                  data-testid="link-bookings"
+                >
+                  My Bookings
+                </Link>
+                <Link 
+                  href="/host-dashboard" 
+                  className={`text-sm transition-colors ${location === "/host-dashboard" ? "text-primary" : "text-foreground hover:text-primary"}`}
+                  data-testid="link-host-dashboard"
+                >
+                  Host Dashboard
+                </Link>
+              </nav>
+            )}
+            <div className="flex items-center space-x-3">
               {isLoading ? (
                 <div className="animate-spin w-5 h-5 border-2 border-primary border-t-transparent rounded-full" />
               ) : isAuthenticated ? (
