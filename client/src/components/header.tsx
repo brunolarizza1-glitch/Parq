@@ -25,7 +25,7 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-6">
             <Link 
               href="/search" 
               className={`transition-colors ${location === "/search" ? "text-primary" : "text-foreground hover:text-primary"}`}
@@ -49,15 +49,6 @@ export default function Header() {
                 data-testid="link-host-dashboard"
               >
                 Host Dashboard
-              </Link>
-            )}
-            {isAuthenticated && (
-              <Link 
-                href="/payouts" 
-                className={`transition-colors ${location === "/payouts" ? "text-primary" : "text-foreground hover:text-primary"}`}
-                data-testid="link-payouts"
-              >
-                Payouts
               </Link>
             )}
             <Link 
@@ -96,16 +87,7 @@ export default function Header() {
           </div>
 
           {/* Desktop User Actions */}
-          <div className="hidden md:flex items-center space-x-4">
-            {isAuthenticated && (
-              <Link 
-                href="/list-space"
-                className="text-foreground hover:text-primary transition-colors"
-                data-testid="button-list-space-desktop"
-              >
-                List your space
-              </Link>
-            )}
+          <div className="hidden md:flex items-center space-x-3">
             <div className="flex items-center space-x-2">
               {isLoading ? (
                 <div className="animate-spin w-5 h-5 border-2 border-primary border-t-transparent rounded-full" />
