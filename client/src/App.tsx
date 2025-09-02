@@ -35,6 +35,7 @@ import Search from "@/pages/search";
 import Map from "@/pages/map";
 import Login from "@/pages/login";
 import Welcome from "@/pages/welcome";
+import AuthCallback from "@/pages/auth-callback";
 import DesignSystemDemo from "@/pages/design-system-demo";
 import AppShell from "@/components/app-shell";
 import Careers from "@/pages/careers";
@@ -135,6 +136,7 @@ function Router() {
         <Route path="/booking-details/:id" component={BookingDetails} />
         <Route path="/login" component={Login} />
         <Route path="/auth" component={Login} />
+        <Route path="/auth/callback" component={AuthCallback} />
         <Route path="/careers" component={Careers} />
         <Route path="/press" component={Press} />
         <Route path="/blog" component={Blog} />

@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { useEffect, useState } from "react";
-import type { User } from "@supabase/supabase-js";
+import type { User, Session, AuthChangeEvent } from "@supabase/supabase-js";
 import { useToast } from "@/hooks/use-toast";
 
 export function useAuth() {
@@ -12,19 +12,31 @@ export function useAuth() {
 
   useEffect(() => {
     // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setIsLoading(false);
-    });
+    supabase.auth.getSession()
+      .then(({ data: { session } }: { data: { session: Session | null } }) => {
+        setUser(session?.user ?? null);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error getting initial session:', error);
+        setUser(null);
+        setIsLoading(false);
+      });
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setUser(session?.user ?? null);
-        setIsLoading(false);
-        
-        // Invalidate user-related queries when auth state changes
-        queryClient.invalidateQueries({ queryKey: ["user"] });
+      async (event: AuthChangeEvent, session: Session | null) => {
+        try {
+          setUser(session?.user ?? null);
+          setIsLoading(false);
+          
+          // Invalidate user-related queries when auth state changes
+          queryClient.invalidateQueries({ queryKey: ["user"] });
+        } catch (error) {
+          console.error('Error handling auth state change:', error);
+          setUser(null);
+          setIsLoading(false);
+        }
       }
     );
 

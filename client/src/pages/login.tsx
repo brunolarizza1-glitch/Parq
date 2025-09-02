@@ -27,11 +27,15 @@ export default function Login() {
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
     try {
-      const redirectUrl = `${window.location.origin}${getRedirectUrl()}`;
+      // Store the redirect URL in localStorage for after auth
+      const redirectUrl = getRedirectUrl();
+      localStorage.setItem('auth_redirect', redirectUrl);
+      
+      const callbackUrl = `${window.location.origin}/auth/callback`;
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: redirectUrl
+          redirectTo: callbackUrl
         }
       });
       
