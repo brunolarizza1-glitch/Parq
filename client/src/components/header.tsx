@@ -25,7 +25,7 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-5">
+          <nav className="hidden md:flex items-center space-x-8">
             <Link 
               href="/search" 
               className={`transition-colors ${location === "/search" ? "text-primary" : "text-foreground hover:text-primary"}`}
@@ -64,7 +64,7 @@ export default function Header() {
           {/* Desktop User Actions */}
           <div className="hidden md:flex items-center space-x-4">
             {isAuthenticated && (
-              <nav className="flex items-center space-x-4 mr-4">
+              <nav className="flex items-center space-x-6 mr-6">
                 <Link 
                   href="/bookings" 
                   className={`text-sm transition-colors ${location === "/bookings" ? "text-primary" : "text-foreground hover:text-primary"}`}
@@ -173,6 +173,15 @@ export default function Header() {
                   >
                     <i className="fas fa-calendar-alt mr-3"></i>
                     My Bookings
+                  </Link>
+                  <Link 
+                    href="/host-dashboard" 
+                    className={`block py-2 px-3 rounded-lg transition-colors ${location === "/host-dashboard" ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-muted"}`}
+                    onClick={() => setMobileMenuOpen(false)}
+                    data-testid="link-mobile-host-dashboard"
+                  >
+                    <i className="fas fa-tachometer-alt mr-3"></i>
+                    Host Dashboard
                   </Link>
                   <Link 
                     href="/profile"
