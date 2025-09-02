@@ -47,13 +47,6 @@ export default function Header() {
             >
               Features
             </Link>
-            <Link 
-              href="/features#how-it-works" 
-              className="text-foreground hover:text-primary transition-colors" 
-              data-testid="link-how-it-works"
-            >
-              How It Works
-            </Link>
           </nav>
 
           {/* Mobile Menu Button */}
