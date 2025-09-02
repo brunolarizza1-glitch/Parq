@@ -63,6 +63,13 @@ export default function Header() {
                 >
                   Host Dashboard
                 </Link>
+                <Link 
+                  href="/payouts" 
+                  className={`transition-colors ${location === "/payouts" ? "text-primary" : "text-foreground hover:text-primary"}`}
+                  data-testid="link-payouts"
+                >
+                  Payouts
+                </Link>
               </>
             )}
           </nav>
@@ -182,6 +189,15 @@ export default function Header() {
                   >
                     <i className="fas fa-tachometer-alt mr-3"></i>
                     Host Dashboard
+                  </Link>
+                  <Link 
+                    href="/payouts" 
+                    className={`block py-2 px-3 rounded-lg transition-colors ${location === "/payouts" ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-muted"}`}
+                    onClick={() => setMobileMenuOpen(false)}
+                    data-testid="link-mobile-payouts"
+                  >
+                    <i className="fas fa-dollar-sign mr-3"></i>
+                    Payouts
                   </Link>
                   <Link 
                     href="/profile"
