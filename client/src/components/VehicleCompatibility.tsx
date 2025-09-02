@@ -89,10 +89,16 @@ export function VehicleCompatibility({ userId, onVehicleSelect }: VehicleCompati
       allowsTrucks: false,
     };
 
-    // Check size compatibility - convert strings to numbers
+    // Check size compatibility - convert strings to numbers with validation
     const vehicleLength = vehicle.length ? parseFloat(vehicle.length) : 0;
     const vehicleWidth = vehicle.width ? parseFloat(vehicle.width) : 0;
     const vehicleHeight = vehicle.height ? parseFloat(vehicle.height) : 0;
+
+    // Validate that the parsed values are valid numbers
+    if (isNaN(vehicleLength) || isNaN(vehicleWidth) || isNaN(vehicleHeight)) {
+      issues.push("Vehicle dimensions are invalid. Please update your vehicle information.");
+      return { isCompatible: false, issues, warnings };
+    }
 
     if (vehicleLength > spaceConstraints.maxLength) {
       issues.push(`Vehicle too long: ${vehicle.length}' (max: ${spaceConstraints.maxLength}')`);

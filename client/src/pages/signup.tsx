@@ -31,7 +31,11 @@ export default function Signup() {
 
   const addLicensePlate = () => {
     if (licensePlates.length < 3) {
-      setLicensePlates([...licensePlates, ""]);
+      // Only add if the last plate is not empty
+      const lastPlate = licensePlates[licensePlates.length - 1];
+      if (lastPlate && lastPlate.trim().length >= 2) {
+        setLicensePlates([...licensePlates, ""]);
+      }
     }
   };
 
@@ -52,9 +56,24 @@ export default function Signup() {
 
   const onSubmit = async (data: DriverSignup) => {
     try {
+      // Filter out empty license plates before submitting
+      const filteredData = {
+        ...data,
+        licensePlates: data.licensePlates.filter(plate => plate.trim().length >= 2)
+      };
+      
+      if (filteredData.licensePlates.length === 0) {
+        toast({
+          title: "Error",
+          description: "At least one valid license plate is required.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
       // For now, redirect to Replit auth to complete registration
       // Later we'll store this data to complete profile after auth
-      localStorage.setItem('pendingDriverSignup', JSON.stringify(data));
+      localStorage.setItem('pendingDriverSignup', JSON.stringify(filteredData));
       window.location.href = "/welcome";
     } catch (error) {
       toast({

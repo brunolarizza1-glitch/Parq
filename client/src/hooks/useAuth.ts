@@ -17,10 +17,16 @@ export function useAuth() {
         setUser(session?.user ?? null);
         setIsLoading(false);
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.error('Error getting initial session:', error);
         setUser(null);
         setIsLoading(false);
+        // Show a toast for critical session errors
+        toast({
+          title: "Authentication Error",
+          description: "Unable to verify your session. Please sign in again.",
+          variant: "destructive",
+        });
       });
 
     // Listen for auth changes
@@ -88,11 +94,20 @@ export function useAuth() {
       if (error) throw error;
     },
     onError: (error: any) => {
+      console.error('Sign out error:', error);
+      // Clear user state even if sign out fails
+      setUser(null);
+      setIsLoading(false);
       toast({
         title: "Sign out failed",
         description: error.message,
         variant: "destructive",
       });
+    },
+    onSuccess: () => {
+      // Ensure user state is cleared on successful sign out
+      setUser(null);
+      setIsLoading(false);
     },
   });
 

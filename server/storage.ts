@@ -374,39 +374,51 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createParkingSpace(insertSpace: InsertParkingSpace): Promise<ParkingSpace> {
-    const id = randomUUID();
-    const space: ParkingSpace = {
-      ...insertSpace,
-      id,
-      unit: insertSpace.unit || null,
-      parkingNotes: insertSpace.parkingNotes || null,
-      latitude: insertSpace.latitude || "0",
-      longitude: insertSpace.longitude || "0",
-      amenities: insertSpace.amenities || [],
-      // Feature toggles
-      covered: insertSpace.covered || false,
-      evCharger: insertSpace.evCharger || false,
-      securityCamera: insertSpace.securityCamera || false,
-      access24_7: insertSpace.access24_7 || false,
-      lighting: insertSpace.lighting || false,
-      heightLimit: insertSpace.heightLimit || null,
-      // Weekly schedule
-      weeklySchedule: insertSpace.weeklySchedule || null,
-      // Pricing options
-      minimumDuration: insertSpace.minimumDuration || 1,
-      firstHourDiscount: insertSpace.firstHourDiscount || false,
-      discountPercentage: insertSpace.discountPercentage || "0",
-      isActive: true,
-      rating: "0",
-      reviewCount: 0,
-      accessInstructions: insertSpace.accessInstructions || null,
-      accessCode: insertSpace.accessCode || null,
-      accessNotes: insertSpace.accessNotes || null,
-      accessImages: insertSpace.accessImages || [],
-      createdAt: new Date(),
-    };
-    this.parkingSpaces.set(id, space);
-    return space;
+    try {
+      if (!insertSpace.ownerId) {
+        throw new Error("Owner ID is required");
+      }
+      if (!insertSpace.title || !insertSpace.address) {
+        throw new Error("Title and address are required");
+      }
+      
+      const id = randomUUID();
+      const space: ParkingSpace = {
+        ...insertSpace,
+        id,
+        unit: insertSpace.unit || null,
+        parkingNotes: insertSpace.parkingNotes || null,
+        latitude: insertSpace.latitude || "0",
+        longitude: insertSpace.longitude || "0",
+        amenities: insertSpace.amenities || [],
+        // Feature toggles
+        covered: insertSpace.covered || false,
+        evCharger: insertSpace.evCharger || false,
+        securityCamera: insertSpace.securityCamera || false,
+        access24_7: insertSpace.access24_7 || false,
+        lighting: insertSpace.lighting || false,
+        heightLimit: insertSpace.heightLimit || null,
+        // Weekly schedule
+        weeklySchedule: insertSpace.weeklySchedule || null,
+        // Pricing options
+        minimumDuration: insertSpace.minimumDuration || 1,
+        firstHourDiscount: insertSpace.firstHourDiscount || false,
+        discountPercentage: insertSpace.discountPercentage || "0",
+        isActive: true,
+        rating: "0",
+        reviewCount: 0,
+        accessInstructions: insertSpace.accessInstructions || null,
+        accessCode: insertSpace.accessCode || null,
+        accessNotes: insertSpace.accessNotes || null,
+        accessImages: insertSpace.accessImages || [],
+        createdAt: new Date(),
+      };
+      this.parkingSpaces.set(id, space);
+      return space;
+    } catch (error) {
+      console.error("Error creating parking space:", error);
+      throw error;
+    }
   }
 
   async updateParkingSpace(id: string, updates: Partial<ParkingSpace>): Promise<ParkingSpace | undefined> {

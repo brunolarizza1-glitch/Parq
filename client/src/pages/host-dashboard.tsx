@@ -31,40 +31,40 @@ import {
   Settings,
   Info
 } from "lucide-react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { EmptyState } from "@/components/ds";
 
 export default function HostDashboard() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { user: authUser, isAuthenticated, isLoading: authLoading } = useAuth();
-  const user = authUser as User | undefined;
+  const [, navigate] = useLocation();
   
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [autoAcceptEnabled, setAutoAcceptEnabled] = useState(true);
 
   // Fetch user's parking spaces
   const { data: userSpaces, isLoading: spacesLoading } = useQuery<ParkingSpace[]>({
-    queryKey: ["/api/users", user?.id, "parking-spaces"],
+    queryKey: ["/api/users", authUser?.id, "parking-spaces"],
     queryFn: async () => {
-      if (!user?.id) return [];
-      const response = await fetch(`/api/users/${user.id}/parking-spaces`);
+      if (!authUser?.id) return [];
+      const response = await fetch(`/api/users/${authUser.id}/parking-spaces`);
       if (!response.ok) throw new Error("Failed to fetch parking spaces");
       return response.json();
     },
-    enabled: !!user?.id
+    enabled: !!authUser?.id
   });
 
   // Fetch recent bookings for user's spaces
   const { data: recentBookings, isLoading: bookingsLoading } = useQuery<Booking[]>({
-    queryKey: ["/api/bookings", "recent", user?.id],
+    queryKey: ["/api/bookings", "recent", authUser?.id],
     queryFn: async () => {
-      if (!user?.id) return [];
-      const response = await fetch(`/api/bookings?ownerId=${user.id}&limit=5`);
+      if (!authUser?.id) return [];
+      const response = await fetch(`/api/bookings?ownerId=${authUser.id}&limit=5`);
       if (!response.ok) throw new Error("Failed to fetch bookings");
       return response.json();
     },
-    enabled: !!user?.id
+    enabled: !!authUser?.id
   });
 
   // Pause/Resume listing mutation
@@ -73,7 +73,7 @@ export default function HostDashboard() {
       return apiRequest("PATCH", `/api/parking-spaces/${id}`, { isActive });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/users", user?.id, "parking-spaces"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/users", authUser?.id, "parking-spaces"] });
       toast({
         title: "Success",
         description: "Listing status updated successfully.",
@@ -102,7 +102,7 @@ export default function HostDashboard() {
       return apiRequest("DELETE", `/api/parking-spaces/${id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/users", user?.id, "parking-spaces"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/users", authUser?.id, "parking-spaces"] });
       setDeleteConfirmId(null);
       toast({
         title: "Success",
@@ -140,7 +140,7 @@ export default function HostDashboard() {
       return apiRequest("POST", "/api/parking-spaces", duplicateData);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/users", user?.id, "parking-spaces"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/users", authUser?.id, "parking-spaces"] });
       toast({
         title: "Success",
         description: "Listing duplicated successfully.",

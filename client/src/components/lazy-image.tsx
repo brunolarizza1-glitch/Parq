@@ -51,13 +51,19 @@ export default function LazyImage({
   }, [priority]);
 
   const handleLoad = () => {
-    setIsLoaded(true);
-    onLoad?.();
+    // Check if the component is still mounted (ref exists)
+    if (imgRef.current) {
+      setIsLoaded(true);
+      onLoad?.();
+    }
   };
 
   const handleError = () => {
-    setHasError(true);
-    onError?.();
+    // Check if the component is still mounted (ref exists)
+    if (imgRef.current) {
+      setHasError(true);
+      onError?.();
+    }
   };
 
   return (

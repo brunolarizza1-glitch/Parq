@@ -478,12 +478,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/users/profile", authenticateSupabase, async (req, res) => {
     try {
       const userId = req.user?.id;
+      
+      if (!userId) {
+        return res.status(401).json({ message: "User ID not found in token" });
+      }
+      
       const user = await storage.getUser(userId);
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
       res.json(user);
     } catch (error) {
+      console.error("Error fetching user profile:", error);
+      if (error instanceof Error && error.message.includes('not found')) {
+        return res.status(404).json({ message: "User not found" });
+      }
       res.status(500).json({ message: "Failed to fetch user profile" });
     }
   });

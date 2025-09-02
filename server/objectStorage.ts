@@ -76,22 +76,35 @@ export class ObjectStorageService {
 
   // Search for a public object from the search paths.
   async searchPublicObject(filePath: string): Promise<File | null> {
-    for (const searchPath of this.getPublicObjectSearchPaths()) {
-      const fullPath = `${searchPath}/${filePath}`;
-
-      // Full path format: /<bucket_name>/<object_name>
-      const { bucketName, objectName } = parseObjectPath(fullPath);
-      const bucket = objectStorageClient.bucket(bucketName);
-      const file = bucket.file(objectName);
-
-      // Check if file exists
-      const [exists] = await file.exists();
-      if (exists) {
-        return file;
+    try {
+      // Validate input
+      if (!filePath || typeof filePath !== 'string') {
+        throw new Error('Invalid file path provided');
       }
-    }
+      
+      // Sanitize the file path to prevent directory traversal
+      const sanitizedPath = filePath.replace(/\.\./g, '').replace(/\/+/g, '/');
+      
+      for (const searchPath of this.getPublicObjectSearchPaths()) {
+        const fullPath = `${searchPath}/${sanitizedPath}`;
 
-    return null;
+        // Full path format: /<bucket_name>/<object_name>
+        const { bucketName, objectName } = parseObjectPath(fullPath);
+        const bucket = objectStorageClient.bucket(bucketName);
+        const file = bucket.file(objectName);
+
+        // Check if file exists
+        const [exists] = await file.exists();
+        if (exists) {
+          return file;
+        }
+      }
+
+      return null;
+    } catch (error) {
+      console.error('Error searching for public object:', error);
+      return null;
+    }
   }
 
   // Downloads an object to the response.
